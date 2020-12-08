@@ -56,18 +56,27 @@ export class HeroService {
         tap((newHero: Hero) => {
           console.log(newHero);
           this.log(`added hero w/ id ${newHero.id}`);
-        })
+        }),
         catchError(this.handleError<Hero>('addedHero'))
       );
   }
 
+  deleteHero(hero: Hero | number): Observable<Hero> {
+    const id = typeof hero === 'number' ? hero: hero.id;
+    const url = `${this.heroesUrl}/${id}`;
+
+    return this.http.delete<Hero>(url, this.httpOptions).pipe(
+      tap(_ => this.log(`deleted hero id=${id}`)),
+      catchError(this.handleError<Hero>('deleteHero'))
+    );
+  }
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(error);
       this.log(`${operation} failed: ${error.message}`);
       return of(result as T);
-    }
+    };
   }
 
   private log(message: string) {

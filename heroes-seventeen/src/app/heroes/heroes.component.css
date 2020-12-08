@@ -48,3 +48,8 @@
   margin-right: .8em;
   border-radius: 4px 0 0 4px;
 }
+
+li > a {
+  text-decoration: none;
+  color: #405061;
+}
